@@ -39,10 +39,4 @@ class Solution {
         
         return answer;
     }
-    
-    void check(int idx, int number) {
-        
-        
-        check(idx + 1, number);
-    }
 }
