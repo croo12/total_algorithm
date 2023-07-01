@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 import java.util.stream.Stream;
 
 public class Main {
@@ -31,16 +32,16 @@ public class Main {
     }
 
     int find (int a) {
-        if (p[a] != a) p[a] = find(p[a]);
+        if (p[a] != a) return p[a] = find(p[a]);
         return p[a];
     }
 
     void input() {
         try {
             var br = new BufferedReader(new InputStreamReader(System.in));
-            String[] tmp = br.readLine().split(" ");
-            N = Integer.parseInt(tmp[0]);
-            M = Integer.parseInt(tmp[1]);
+            var st = new StringTokenizer(br.readLine(), " ");
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
 
             p = new int[N+1];
             for (int i = 0; i <= N; i++) {
@@ -49,9 +50,11 @@ public class Main {
 
             orders = new int[M][3];
             for ( var i = 0; i < M; i ++) {
-                orders[i] = Stream.of(br.readLine().split(" "))
-                            .mapToInt(Integer::parseInt)
-                            .toArray();
+                st = new StringTokenizer(br.readLine());
+                orders[i] = new int[3];
+                orders[i][0] = Integer.parseInt(st.nextToken());
+                orders[i][1] = Integer.parseInt(st.nextToken());
+                orders[i][2] = Integer.parseInt(st.nextToken());
             }
         } catch( Exception e) {
             e.printStackTrace();
