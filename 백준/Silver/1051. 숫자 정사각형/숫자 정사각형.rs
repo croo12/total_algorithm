@@ -3,21 +3,14 @@ use std::io::stdin;
 fn main() {
     let n_m : Vec<usize> = parse_vec(read_line());
 
-    let mut map_vector : Vec<Vec<char>> = Vec::new();
+    let mut map_vector : Vec<Vec<char>> = vec![vec!['\0'; n_m[1]]; n_m[0]];
 
-    for idx in 0..n_m[0] {
+    for row in 0..n_m[0] {
         let input = read_line();
         let mut tmp = input.trim_end().chars();
 
-        map_vector.push(Vec::<char>::new());
-        loop {
-            let c = tmp.next();
-
-            if c == None {
-                break;
-            }
-
-            map_vector[idx].push(c.unwrap());
+        for col in 0..n_m[1] {
+            map_vector[row][col] = tmp.next().unwrap();
         }
     }
 
