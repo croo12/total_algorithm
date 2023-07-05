@@ -12,7 +12,7 @@ public class Main {
     int T, voters;
     VoteGraph voteGraph;
     Candidate[] candidates;
-    List<Vote> deadVotes = new LinkedList<>();
+    List<Vote> deadVotes;
     private void solution() {
         input();
 
@@ -23,13 +23,10 @@ public class Main {
     }
 
     boolean process() {
-
-        //투표가 종료되었는지 체크하고 출력하기
         if (voteGraph.isEnd()) {
             var sb = new StringBuilder();
             var max = voteGraph.maxIdx;
             for (var candidate : candidates) {
-
                 if (candidate.countVotes() == max) {
                     sb.append(candidate.name).append('\n');
                 }
@@ -39,9 +36,10 @@ public class Main {
             return false;
         }
 
-        //제일 표가 적은 녀석들을 전부 방출하기
+        deadVotes = new LinkedList<>();
+
+        //표 최소인 친구들 방출함
         var min = voteGraph.minIdx;
-        var max = voteGraph.maxIdx;
         for (var candidate : candidates) {
             if (candidate.countVotes() == min) {
                 deadVotes.addAll(candidate.isOut());
@@ -55,8 +53,6 @@ public class Main {
                 vote = candidates[vote.idx].subscribe(vote);
             }
         }
-
-        deadVotes.clear();
 
         return true;
     }
