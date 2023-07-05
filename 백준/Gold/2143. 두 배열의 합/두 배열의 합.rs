@@ -3,13 +3,13 @@ use std::{io::stdin, collections::HashMap};
 fn main() {
     let t: i32 = read_line().trim_end().parse().expect("parse err");
     
-    read_line();
+    let a_len: usize = read_line().trim_end().parse().expect("parse err");
     let a_tmp: Vec<i32> = parse_vec(read_line());
-    let a = calc_cumulative_sum(&a_tmp);
+    let a = calc_cumulative_sum(&a_tmp, &a_len);
     
-    read_line();
+    let b_len: usize = read_line().trim_end().parse().expect("parse err");
     let b_tmp: Vec<i32> = parse_vec(read_line());
-    let b = calc_cumulative_sum(&b_tmp);
+    let b = calc_cumulative_sum(&b_tmp, &b_len);
 
     let mut answer: u64 = 0;
     for key in a.keys() {
@@ -23,39 +23,24 @@ fn main() {
     println!("{}", answer);
 }
 
-fn calc_cumulative_sum(origin : &Vec<i32>) -> HashMap<i32, u64> 
+fn calc_cumulative_sum(origin : &Vec<i32>, len: &usize) -> HashMap<i32, u64> 
 {
-    let mut value:Vec<i32> = Vec::new();
+    let mut sums:Vec<i32> = vec![0; *len + 1];
+    let mut map:HashMap<i32, u64> = HashMap::new();
 
-    let mut value_map:HashMap<i32, u64> = HashMap::new();
+    sums[1] = origin[0];
 
-    value.push(origin[0]);
-    value_map.insert(origin[0], 1);
-
-    for idx in 1..origin.len() {
-        let calc = value[idx-1] + origin[idx];
-        value.push(calc);
-
-        if !value_map.contains_key(&calc) {
-            value_map.insert(calc, 0);
-        }
-        value_map.insert(calc, value_map[&calc] + 1);
+    for idx in 1..=*len {
+        sums[idx] = sums[idx-1] + origin[idx-1];
     }
 
-    for idx in 0..value.len() {
-        let sum = value[idx];
-        
+    for idx in 0..=*len {
         for minus in 0..idx {
-            let calc = sum - value[minus];
-
-            if !value_map.contains_key(&calc) {
-                value_map.insert(calc, 0);
-            }
-            value_map.insert(calc, value_map.get(&calc).unwrap() + 1);
+            *map.entry(sums[idx] - sums[minus]).or_insert(0) += 1;
         }
     }
 
-    value_map
+    map
 }
 
 fn parse_vec<T: std::str::FromStr> (line : String ) -> Vec<T> 
