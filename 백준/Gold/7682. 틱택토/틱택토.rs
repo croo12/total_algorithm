@@ -105,18 +105,6 @@ fn is_win(now : &Vec<char>, is_o : bool) -> bool {
     return false;
 }
 
-fn parse_vec<T: std::str::FromStr>(line: String) -> Vec<T>
-where
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
-{
-    let list: Vec<T> = line
-        .split_whitespace()
-        .map(|w| w.parse::<T>().unwrap())
-        .collect();
-
-    list
-}
-
 fn read_line() -> String {
     let mut input = String::new();
 
