@@ -6,8 +6,7 @@ public class Main {
     public static void main(String[] args) {
         new Main().solution();
     }
-
-
+    
     static class Building implements Comparable<Building>{
         int L,H,R;
         boolean flag;
@@ -38,12 +37,13 @@ public class Main {
 
     PriorityQueue<Building> notStart;
     PriorityQueue<Building> notEnd;
+    TreeMap<Integer, Integer> heights;
 
     private void solution() {
         input();
 
         var nowHeights =  0;
-        var heights = new TreeMap<Integer, Integer>(Comparator.reverseOrder());
+        heights = new TreeMap<>(Comparator.reverseOrder());
         var sb = new StringBuilder();
         heights.put(0, 9999);
 
@@ -52,17 +52,7 @@ public class Main {
             var end = notEnd.peek();
 
             if (end == null || (start != null && end.R > start.L)) {
-
-                //어떤 빌딩의 왼쪽 시작부분
-                while ( !notStart.isEmpty() && notStart.peek().L == start.L) {
-
-                    var tmp = notStart.poll();
-
-                    //높이 저장
-                    heights.merge(tmp.H, 1, Integer::sum);
-                    tmp.flag = true;
-                    notEnd.offer(tmp);
-                }
+                putHeights(start.L);
 
                 int newGuy;
                 if ( (newGuy = heights.firstKey()) != nowHeights) {
@@ -71,15 +61,7 @@ public class Main {
                 }
             } else if ( start == null || end.R < start.L) {
                 //어떤 빌딩의 오른쪽 끝
-                while ( !notEnd.isEmpty() && notEnd.peek().R == end.R ) {
-                    var tmp = notEnd.poll();
-
-                    //저장되어있는 높이에서 넌 추방이다
-                    heights.merge(tmp.H, 1, (oldV, newV) -> {
-                        if ( oldV == 1 ) return null;
-                        else return oldV - newV;
-                    });
-                }
+                deleteHeights(end.R);
 
                 int newGuy;
                 if ( (newGuy = heights.firstKey()) != nowHeights) {
@@ -88,24 +70,8 @@ public class Main {
                 }
             } else {
                 //둘이 같음
-                while ( !notEnd.isEmpty() && notEnd.peek().R == end.R ) {
-                    var tmp = notEnd.poll();
-
-                    //저장되어있는 높이에서 넌 추방이다
-                    heights.merge(tmp.H, 1, (oldV, newV) -> {
-                        if ( oldV == 1 ) return null;
-                        else return oldV - newV;
-                    });
-                }
-
-                while ( !notStart.isEmpty() && notStart.peek().L == start.L) {
-                    var tmp = notStart.poll();
-
-                    //높이 저장
-                    heights.merge(tmp.H, 1, Integer::sum);
-                    tmp.flag = true;
-                    notEnd.offer(tmp);
-                }
+                deleteHeights(end.R);
+                putHeights(start.L);
 
                 int newGuy;
                 if ( (newGuy = heights.firstKey()) != nowHeights) {
@@ -117,6 +83,31 @@ public class Main {
 
         sb.setLength(sb.length() - 1);
         System.out.println(sb);
+    }
+
+    void putHeights(int start) {
+        //어떤 빌딩의 왼쪽 시작부분
+        while ( !notStart.isEmpty() && notStart.peek().L == start) {
+
+            var tmp = notStart.poll();
+
+            //높이 저장
+            heights.merge(tmp.H, 1, Integer::sum);
+            tmp.flag = true;
+            notEnd.offer(tmp);
+        }
+    }
+
+    void deleteHeights(int end) {
+        while ( !notEnd.isEmpty() && notEnd.peek().R == end ) {
+            var tmp = notEnd.poll();
+
+            //저장되어있는 높이에서 넌 추방이다
+            heights.merge(tmp.H, 1, (oldV, newV) -> {
+                if ( oldV == 1 ) return null;
+                else return oldV - newV;
+            });
+        }
     }
 
     void input() {
