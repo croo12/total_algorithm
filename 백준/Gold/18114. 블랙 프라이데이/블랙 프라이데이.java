@@ -21,18 +21,13 @@ public class Main {
     }
 
     boolean check() {
-
-        if (binarySearch(0)) {
-            return true;
-        }
-
         for (int firstIdx = 0; firstIdx < N; firstIdx++) {
-            if (binarySearch(weight[firstIdx], firstIdx)) {
-                return true;
-            }
+            if (weight[firstIdx] == C) return true;
 
             for (int secondIdx = firstIdx + 1; secondIdx < N; secondIdx++) {
-                if (binarySearch(weight[firstIdx] + weight[secondIdx], firstIdx, secondIdx)) {
+                if (weight[firstIdx] + weight[secondIdx] == C) return true;
+
+                if (binarySearch(weight[firstIdx] + weight[secondIdx], secondIdx + 1)) {
                     return true;
                 }
             }
@@ -41,9 +36,7 @@ public class Main {
         return false;
     }
 
-    boolean binarySearch(int value, int ...idx) {
-
-        int start = 0;
+    boolean binarySearch(int value, int start) {
         int end = N - 1;
         int mid;
 
@@ -59,15 +52,7 @@ public class Main {
             }
         }
 
-        if ( start != N && weight[start] == target) {
-            for (var i : idx) {
-                if (start == i) return false;
-            }
-
-            return true;
-        } else {
-            return false;
-        }
+        return start != N && weight[start] == target;
     }
 
     void input() {
