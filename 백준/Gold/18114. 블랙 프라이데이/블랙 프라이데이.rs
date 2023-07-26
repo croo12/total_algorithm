@@ -1,10 +1,14 @@
-use std::io;
+use std::io::{self, Read};
 
 fn main() {
-    let n_c : Vec<usize> = parse_vec(read_line());
-    let n = n_c[0];
-    let c = n_c[1] as i32;
-    let mut numbers: Vec<i32> = parse_vec(read_line());
+    let mut buf = String::new();
+    io::stdin().read_to_string(&mut buf).unwrap();
+    let mut tokens = buf.split_ascii_whitespace();
+
+    let n = tokens.next().unwrap().parse().unwrap();
+    let c = tokens.next().unwrap().parse().unwrap();
+
+    let mut numbers: Vec<i32> = tokens.take(n).map(|s| s.parse().unwrap()).collect();
     numbers.sort();
 
     if solution(&numbers, &n, &c) {
@@ -37,23 +41,4 @@ fn solution(numbers: &[i32], n: &usize, c: &i32) -> bool {
     }
 
     false
-}
-
-fn parse_vec<T: std::str::FromStr>(line: String) -> Vec<T>
-where
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
-{
-    let list: Vec<T> = line
-        .split_whitespace()
-        .map(|w| w.parse::<T>().unwrap())
-        .collect();
-
-    list
-}
-
-fn read_line() -> String {
-    let mut input = String::new();
-
-    io::stdin().read_line(&mut input).expect("can't read");
-    input
 }
