@@ -20,7 +20,7 @@ int main()
 
     vector<vector<int>> count(s1_len + 1, vector<int>(s2_len + 1, 0));
 
-    for(int i = 1; i <= s1_len; i++) {
+    for(int i = 1; i <= s1_len; ++i) {
         for (int j = 1; j <= s2_len; ++j) {
             if (s1[i-1] == s2[j-1]) {
                 count[i][j] = count[i-1][j-1] + 1;
