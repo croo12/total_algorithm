@@ -6,7 +6,8 @@ import java.util.StringTokenizer;
 public class Main {
     int N, M;
     int[][] map;
-    int[][][] memo;
+    int[][] upMemo;
+    int[][] downMemo;
     final int MIN = -100_000_001;
     private void solution() {
         input();
@@ -18,7 +19,7 @@ public class Main {
 
     int upper(int row, int col) {
 
-        if (memo[row][col][0] != MIN) return memo[row][col][0];
+        if (upMemo[row][col] != MIN) return upMemo[row][col];
 
         int max = MIN;
         int point = map[row][col];
@@ -31,12 +32,12 @@ public class Main {
 
         max = Math.max(lower(row, col), max);
 
-        return memo[row][col][0] = max + point;
+        return upMemo[row][col] = max + point;
     }
 
     int lower(int row, int col) {
 
-        if (memo[row][col][1] != MIN) return memo[row][col][1];
+        if (downMemo[row][col] != MIN) return downMemo[row][col];
 
         int max = MIN;
         int point = map[row][col];
@@ -51,7 +52,7 @@ public class Main {
         if (row != N-1)
             max = Math.max(lower(row+1, col), max);
 
-        return memo[row][col][1] = max + point;
+        return downMemo[row][col] = max + point;
     }
 
     void input() {
@@ -62,14 +63,14 @@ public class Main {
             M = Integer.parseInt(st.nextToken());
 
             map = new int[N][M];
-            memo = new int[N][M][2];
+            upMemo = new int[N][M];
+            downMemo = new int[N][M];
 
             for (int i = 0; i < N; i++) {
                 st = new StringTokenizer(br.readLine(), " ");
                 for (int j = 0; j < M; j++) {
                     map[i][j] = Integer.parseInt(st.nextToken());
-                    memo[i][j][0] = MIN;
-                    memo[i][j][1] = MIN;
+                    upMemo[i][j] = downMemo[i][j] = MIN;
                 }
             }
 
