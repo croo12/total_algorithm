@@ -12,47 +12,22 @@ public class Main {
     private void solution() {
         input();
 
+        downMemo[N-1][M-1] = map[N-1][M-1];
         int answer = upper(N-1,0);
 
         System.out.println(answer);
     }
 
     int upper(int row, int col) {
-
+        if (row < 0 || col >= M) return MIN;
         if (upMemo[row][col] != MIN) return upMemo[row][col];
-
-        int max = MIN;
-        int point = map[row][col];
-
-        if (col != M - 1)
-            max = Math.max(upper(row, col+1), max);
-
-        if (row != 0)
-            max = Math.max(upper(row-1, col), max);
-
-        max = Math.max(lower(row, col), max);
-
-        return upMemo[row][col] = max + point;
+        return upMemo[row][col] = Math.max( Math.max(upper(row, col+1), upper(row-1, col)), lower(row, col)) + map[row][col];
     }
 
     int lower(int row, int col) {
-
+        if (row >= N || col >= M) return MIN;
         if (downMemo[row][col] != MIN) return downMemo[row][col];
-
-        int max = MIN;
-        int point = map[row][col];
-
-        if (row == N-1 && col == M -1) {
-            return map[N-1][M-1];
-        }
-
-        if (col != M - 1)
-            max = Math.max(lower(row, col+1), max);
-
-        if (row != N-1)
-            max = Math.max(lower(row+1, col), max);
-
-        return downMemo[row][col] = max + point;
+        return downMemo[row][col] = Math.max(lower(row, col+1), lower(row+1, col)) + map[row][col];
     }
 
     void input() {
