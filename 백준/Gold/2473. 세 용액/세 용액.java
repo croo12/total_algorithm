@@ -15,14 +15,25 @@ public class Main {
         long min = Long.MAX_VALUE;
         long[] answer = new long[3];
         for (int i = 0; i < N - 2; i++) {
-            for (int j = i + 1; j < N - 1; j++) {
-                long res = binarySearch(j+1, -(numbers[i] + numbers[j]));
-                long result = Math.abs(res + numbers[i] + numbers[j]);
-                if (result < min) {
-                    min = result;
+            int start = i + 1;
+            int end = N - 1;
+
+            while (start < end) {
+                long tmp = numbers[start] + numbers[end];
+                long result = numbers[i] + tmp;
+
+                long res = Math.abs( result );
+                if ( res < min ) {
+                    min = res;
                     answer[0] = numbers[i];
-                    answer[1] = numbers[j];
-                    answer[2] = res;
+                    answer[1] = numbers[start];
+                    answer[2] = numbers[end];
+                }
+
+                if (result > 0) {
+                    end--;
+                } else {
+                    start++;
                 }
             }
         }
