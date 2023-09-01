@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 55612 KB, 시간: 312 ms
+메모리: 14960 KB, 시간: 160 ms
 
 ### 분류
 
@@ -16,7 +16,7 @@
 
 <p>예를 들어, 서울과 경산 사이에 2개의 도시가 있는 다음과 같은 경우(N = 3)를 생각해 보자.</p>
 
-<p style="text-align: center;"><img alt="" src="https://onlinejudgeimages.s3-ap-northeast-1.amazonaws.com/problem/14863/1.png" style="height:139px; width:275px"></p>
+<p style="text-align: center;"><img alt="" src="" style="height:139px; width:275px"></p>
 
 <p>인접한 도시 사이를 도보로 이동하는지 자전거로 이동하는지에 따라 전체 모금액이나 걸리는 시간에 차이가 생기게 된다. 한정올 씨는 전체 모금액을 가능한 많이 얻는 방법을 찾고 싶어 한다. 위의 예에서는 시간이 충분하다면 모든 구간을 도보로 이동하는 것이 모금액을 최대로 하는 방법이며, 모금액은 200+370+250 = 820원, 여행에 걸리는 시간은 500+800+700 = 2,000분이다.</p>
 

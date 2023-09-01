@@ -7,14 +7,8 @@ import java.util.StringTokenizer;
 public class Main {
     int N, K;
     int[][] mt;
-    int[][] cache;
     private void solution() {
         input();
-
-        cache = new int[N][K+1];
-        for (int i = 0; i < N; i++) {
-            Arrays.fill(cache[i], -1);
-        }
 
         int ans = dfs(0, 0);
         System.out.println(ans);
@@ -24,11 +18,9 @@ public class Main {
         if ( time > K ) return -1987654321;
         if ( idx == N ) return 0;
 
-        if (cache[idx][time] != -1) return cache[idx][time];
-
         int max = Math.max( dfs(idx+1, time + mt[idx][0]) + mt[idx][1], dfs(idx+1, time + mt[idx][2]) + mt[idx][3]);
 
-        return cache[idx][time] = max;
+        return max;
     }
 
     void input() {
