@@ -24,6 +24,9 @@ int memo[301][301];
 int calc(int idx, int visit);
 
 int main() {
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL), cout.tie(NULL);
+
 	cin >> n >> m >> k;
 
 	fill(road, road + 301, nullptr);
