@@ -7,41 +7,44 @@ public class Main {
     int N, M, L;
     int[] dividePoint;
     int[] q;
-    int[][] cache;
 
     private void solution() {
         input();
 
-        cache = new int[M+1][M+1];
-        for (int i = 0; i <= M; i++) {
-            Arrays.fill(cache[i], -1);
-        }
-
         var sb = new StringBuilder();
         for (var i : q) {
-            sb.append(dfs(i, 0));
+            int start = 1;
+            int end = 4_000_000;
+            int mid;
+
+            while (start <= end) {
+                mid = (start + end)/2;
+
+                if (check(mid, i)) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+
+            sb.append(end);
             sb.append('\n');
         }
 
-        System.out.println(sb);
+        System.out.print(sb);
     }
 
-    int dfs(int select, int idx) {
-        if (cache[select][idx] != -1) return cache[select][idx];
-
-        int now = dividePoint[idx];
-
-        if (select == 0) {
-            //길이 - 지금위치
-            return cache[select][idx] = L - now;
+    boolean check(int value, int select) {
+        int i = 0;
+        int count = 0;
+        for (var l : dividePoint) {
+            if (l - i >= value) {
+                count++;
+                i = l;
+            }
         }
 
-        int max = 0;
-        for (int i = idx + 1; i <= (M - select + 1); i++) {
-            max = Math.max(max, Math.min(dividePoint[i] - now,  dfs(select - 1, i)));
-        }
-
-        return cache[select][idx] = max;
+        return count > select;
     }
 
     void input() {
@@ -53,9 +56,10 @@ public class Main {
             L = Integer.parseInt(st.nextToken());
 
             dividePoint = new int[M+1];
-            for (int i = 1; i <= M; i++) {
+            for (int i = 0; i < M; i++) {
                 dividePoint[i] = Integer.parseInt(br.readLine());
             }
+            dividePoint[M] = L;
 
             q = new int[N];
             for (int i = 0; i < N; i++) {
