@@ -1,16 +1,16 @@
 #include <iostream>
-#include <list>
 
 using namespace std;
 
 constexpr int MAX = 2'000'000;
 int s[100'000];
-
 int n, k;
-
 bool check(const int &num);
 
 int main() {
+	cin.tie(0); 
+	ios_base::sync_with_stdio(0);
+
 	cin >> n >> k;
 
 	for (int i = 0; i < n; i++)
