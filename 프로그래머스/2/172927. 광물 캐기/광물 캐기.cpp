@@ -1,9 +1,20 @@
 #include<vector>
 #include<string>
+#include<unordered_map>
 
 using namespace std;
 
+constexpr const char* diamond = "diamond";
+constexpr const char* iron = "iron";
+constexpr const char* stone = "stone";
+
 int answer = 987'654'321;
+
+const unordered_map<string, int> fatigue[3] = {
+    {{ diamond, 1 }, { iron, 1 }, { stone, 1 },},
+    {{ diamond, 5 }, { iron, 1 }, { stone, 1 },},
+    {{ diamond, 25 }, { iron, 5 }, { stone, 1 },}
+};
 
 void dfs(int cnt, int sum, vector<int>& _picks, const vector<string>& _minerals);
 int calc(int start, int kind, const vector<string>& _minerals);
@@ -42,36 +53,8 @@ int calc(int start, int kind, const vector<string>& _minerals)
     for (int i = start; i < start + 5 && i < _minerals.size(); i++)
     {
         const string s = _minerals[i];
-        switch (kind)
-        {
-        case 0:
-            sum += 1;
-            break;
-        case 1:
-            if (s.compare("diamond") == 0)
-            {
-                sum += 5;
-            }
-            else
-            {
-                sum += 1;
-            }
-            break;
-        case 2:
-            if (s.compare("diamond") == 0)
-            {
-                sum += 25;
-            }
-            else if (s.compare("iron") == 0)
-            {
-                sum += 5;
-            }
-            else
-            {
-                sum += 1;
-            }
-            break;
-        }
+        auto tmp = fatigue[kind];
+        sum += tmp[s];
     }
 
     return sum;
